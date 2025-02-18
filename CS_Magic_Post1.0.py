@@ -15,23 +15,37 @@ openai.api_key = API_KEY
 # OpenAI-Client initialisieren
 client = openai.OpenAI(api_key=API_KEY)
 
+# Titel der App
 st.title("Instagram Post Maschine")
-st.write("Hallo Princess, lass uns zusammen ein paar tolle Posts für CircleStances generieren :)")
+st.write("Hallo, lass uns zusammen ein paar tolle Posts für CircleStances generieren :)")
 
-# Text-Input-Feld
-Content = st.text_input("Was für einen Post möchtest du erstellen?")
-
-# Speichere den Status des Buttons in session_state
+# Stelle sicher, dass der Button-Status gespeichert wird
 if "button_clicked" not in st.session_state:
     st.session_state.button_clicked = False
 
-# Button zum Absenden
-if st.button("Absenden"):
-    st.session_state.button_clicked = True  # Merken, dass geklickt wurde
+# Textfeld für die Eingabe
+Content = st.text_input("Was für einen Post möchtest du erstellen?")
 
-# Warte, bis eine Eingabe UND ein Klick erfolgt ist
-if st.session_state.button_clicked and Content:
+# Button, um die API-Anfrage zu starten
+if st.button("Absenden"):
+    if Content:  # Stelle sicher, dass das Textfeld nicht leer ist
+        st.session_state.button_clicked = True
+    else:
+        st.warning("Bitte gib zuerst einen Post-Inhalt ein!")
+
+# API-Call nur ausführen, wenn der Button gedrückt wurde
+if st.session_state.button_clicked:
     st.write("Kein Problem, ich generiere dir Posts, die du verwenden kannst...")
+
+    # Beispielhafter API-Call (Wird erst nach Button-Klick ausgeführt!)
+    openai.api_key = st.secrets["openai"]["api_key"]
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": f"Erstelle einen Instagram-Post über {Content}"}]
+    )
+
+    # API-Antwort anzeigen
+    st.write(response["choices"][0]["message"]["content"])
 
 # Assistant IDs
 IDEA_GENERATOR_ID = "asst_6w5MxQZZ5YnN05PlyRpwOzUJ"
