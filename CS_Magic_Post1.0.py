@@ -15,7 +15,7 @@ if Content:
     st.write("Kein Problem, ich generiere dir Posts, die du verwenden kannst...")
 
 # Setze deinen OpenAI API-Schlüssel
-API_KEY = "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"
+API_KEY = st.secrets[auth_token]
 
 # OpenAI-Client initialisieren
 client = openai.OpenAI(api_key=API_KEY)
