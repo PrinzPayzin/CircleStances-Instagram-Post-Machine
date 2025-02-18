@@ -6,14 +6,6 @@ import openai
 import time
 import json
 
-st.title("Instagram Post Maschine")
-st.write("Hallo Princess, lass uns zusammen ein paar tolle Posts für CircleStances generieren :)")
-Content = st.text_input("Was für einen Post möchtest du erstellen?")
-button_clicked = st.button("Absenden")
-
-if Content:
-    st.write("Kein Problem, ich generiere dir Posts, die du verwenden kannst...")
-
 # API-Key sicher abrufen
 API_KEY = st.secrets["openai"]["api_key"]
 
@@ -23,6 +15,23 @@ openai.api_key = API_KEY
 # OpenAI-Client initialisieren
 client = openai.OpenAI(api_key=API_KEY)
 
+st.title("Instagram Post Maschine")
+st.write("Hallo, lass uns zusammen ein paar tolle Posts für CircleStances generieren :)")
+
+# Text-Input-Feld
+Content = st.text_input("Was für einen Post möchtest du erstellen?")
+
+# Speichere den Status des Buttons in session_state
+if "button_clicked" not in st.session_state:
+    st.session_state.button_clicked = False
+
+# Button zum Absenden
+if st.button("Absenden"):
+    st.session_state.button_clicked = True  # Merken, dass geklickt wurde
+
+# Warte, bis eine Eingabe UND ein Klick erfolgt ist
+if st.session_state.button_clicked and Content:
+    st.write("Kein Problem, ich generiere dir Posts, die du verwenden kannst...")
 
 # Assistant IDs
 IDEA_GENERATOR_ID = "asst_6w5MxQZZ5YnN05PlyRpwOzUJ"
@@ -88,7 +97,7 @@ def run_assistant_new_thread(assistant_id, message, max_retries=3):
 def generate_ideas():
     print("\n[STEP] Generiere Instagram-Content-Ideen...")
     prompt = (
-        "Bitte generiere 30 Ideen für deutsche Instagram-Posts für die nachhaltige Fashion Brand CircleStances "
+        "Bitte generiere 15 Ideen für deutsche Instagram-Posts für die nachhaltige Fashion Brand CircleStances "
         "Zu diesem Thema: "
         f"{Content}\n\n"
         "Berücksichtige dabei den Brand Brief und Produkte und Beschreibungen von CircleStances "
@@ -121,7 +130,7 @@ def generate_posts():
     prompt = (
         f"{ideas}\n\n"
         "Bitte formuliere aus all diesen Ideen Instagram-Posts, passend zum Brand Brief von CircleStances. "
-        "Die Posts sollten 250-400 Zeichen haben und passende Hashtags am Ende. Nutze Emojis wo es passt."
+        "Die Posts sollten 250-350 Zeichen haben und passende Hashtags am Ende. Nutze Emojis wo es passt."
     )
     print("\n[PROMPT für Posts]")
     print(prompt)
