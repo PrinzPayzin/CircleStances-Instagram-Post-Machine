@@ -14,8 +14,11 @@ button_clicked = st.button("Absenden")
 if Content:
     st.write("Kein Problem, ich generiere dir Posts, die du verwenden kannst...")
 
-# API-Key sicher aus st.secrets abrufen
-openai.api_key = st.secrets["openai"]["api_key"]
+# API-Key sicher abrufen
+API_KEY = st.secrets["openai"]["api_key"]
+
+# OpenAI-API konfigurieren
+openai.api_key = API_KEY
 
 # OpenAI-Client initialisieren
 client = openai.OpenAI(api_key=API_KEY)
