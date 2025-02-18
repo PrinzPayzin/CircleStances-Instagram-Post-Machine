@@ -16,7 +16,7 @@ openai.api_key = API_KEY
 client = openai.OpenAI(api_key=API_KEY)
 
 st.title("Instagram Post Maschine")
-st.write("Hallo, lass uns zusammen ein paar tolle Posts für CircleStances generieren :)")
+st.write("Hallo Princess, lass uns zusammen ein paar tolle Posts für CircleStances generieren :)")
 
 # Text-Input-Feld
 Content = st.text_input("Was für einen Post möchtest du erstellen?")
